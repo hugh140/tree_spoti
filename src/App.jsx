@@ -6,8 +6,8 @@ import "./index.css";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
-// const nextURL = PAGE_URL;
-// window.history.pushState(null, null, nextURL);
+const nextURL = PAGE_URL;
+window.history.pushState(null, null, nextURL);
 
 function App() {
   return (

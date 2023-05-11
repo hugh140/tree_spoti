@@ -1,8 +1,8 @@
 import { PAGE_URL } from "../scripts/constants";
+import { clientId } from "../scripts/constants";
 
 function LoginPage() {
   function redirectLoginPage() {
-    const clientId = "175032166c78487884952133cf50d3d7";
     const redirectUri = PAGE_URL;
 
     const uriParams = new URLSearchParams();
