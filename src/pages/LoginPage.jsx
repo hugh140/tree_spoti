@@ -1,4 +1,4 @@
-import { clientId } from "../scripts/constants";
+import { clientId, PAGE_URL } from "../scripts/constants";
 
 function LoginPage() {
   async function redirectLoginPage() {
@@ -9,7 +9,7 @@ function LoginPage() {
 
     const uriParams = new URLSearchParams();
     uriParams.append("client_id", clientId);
-    uriParams.append("redirect_uri", "http://localhost:4000");
+    uriParams.append("redirect_uri", PAGE_URL);
     uriParams.append("response_type", "code");
     uriParams.append("scope", "user-top-read");
     uriParams.append("code_challenge_method", "S256");
