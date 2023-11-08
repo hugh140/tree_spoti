@@ -69,7 +69,7 @@ function SpotifyPage({ code }) {
 
   return (
     <>
-      <main className="mt-5 w-1/2 mx-auto">
+      <main className="mt-5 md:w-1/2 w-9/12  mx-auto">
         <div className="grid place-content-center m-5">
           <img
             className="border-2 border-black p-1 object-cover w-60 h-60"
