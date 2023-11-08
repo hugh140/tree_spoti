@@ -63,6 +63,15 @@ function LoginPage() {
       </div>
 
       <div>This page won&apos;t use or save your information. &lt;3</div>
+      <span className="font-bold">
+        Made using{" "}
+        <a
+          className="text-center text-lime-500 hover:underline cursor-pointer"
+          href="https://developer.spotify.com/documentation/web-api"
+        >
+          Spotify Web API <i className="fa-brands fa-spotify"></i>
+        </a>
+      </span>
     </article>
   );
 }

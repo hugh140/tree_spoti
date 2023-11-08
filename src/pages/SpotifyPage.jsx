@@ -4,6 +4,7 @@ import { clientId } from "../scripts/constants";
 
 function SpotifyPage({ code }) {
   const [artistCover, setArtistCover] = useState({});
+  const [artistURL, setArtistURL] = useState({})
   const [topThree, setTopThree] = useState({});
   const [otherTop, setOtherTop] = useState({});
 
@@ -45,6 +46,7 @@ function SpotifyPage({ code }) {
       })
         .then((response) => response.json())
         .then((result) => {
+          setArtistURL(result.items[0].external_urls.spotify)
           setArtistCover(result.items[0].images[1].url);
           setTopThree([...result.items].slice(0, 3));
           setOtherTop([...result.items].slice(3, result.items.length));
@@ -55,10 +57,12 @@ function SpotifyPage({ code }) {
 
   function changeotherTopCover(index) {
     setArtistCover(otherTop[index].images[1].url);
+    setArtistURL(otherTop[index].external_urls.spotify)
   }
 
   function changeTopArtistsCover(index) {
     setArtistCover(topThree[index].images[1].url);
+    setArtistURL(topThree[index].external_urls.spotify)
   }
 
   function logOut() {
@@ -76,11 +80,13 @@ function SpotifyPage({ code }) {
       <main className="text-center mx-auto">
         <main className="md:w-1/2 w-9/12  mx-auto">
           <div className="grid place-content-center p-5">
-            <img
-              className="border-2 border-black p-1 object-cover w-60 h-60"
-              src={artistCover}
-              alt={topThree[1]?.name}
-            />
+            <a href={artistURL}>
+              <img
+                className="border-2 border-black p-1 object-cover w-60 h-60"
+                src={artistCover}
+                alt={topThree[1]?.name}
+              />
+            </a>
           </div>
 
           <button
