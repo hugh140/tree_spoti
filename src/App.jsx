@@ -7,13 +7,12 @@ const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
 const nextURL = PAGE_URL;
-window.history.pushState(null, null, nextURL);
+// window.history.pushState(null, null, nextURL);
 
 function App() {
   return (
     <main className="container text-center mx-auto">
-      {/* {code ? <SpotifyPage code={code} /> : <LoginPage />} */}
-      <SpotifyPage code={code} />
+      {code ? <SpotifyPage code={code} /> : <LoginPage />}
     </main>
   );
 }

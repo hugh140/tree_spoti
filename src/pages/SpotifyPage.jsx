@@ -1,23 +1,65 @@
-import { useState } from "react";
-import useArtists from "../hooks/useArtists";
-import artists from "../jsontest/artists";
-
-const items = artists.items;
-const topThreeArtists = [...items].slice(0, 3);
-const otherArtists = [...items].slice(3, items.length);
+import { useEffect, useState } from "react";
+import { PAGE_URL } from "../scripts/constants";
+import { clientId } from "../scripts/constants";
 
 function SpotifyPage({ code }) {
-  // const artists = useArtists(code);
-  console.log(artists);
+  const [artistCover, setArtistCover] = useState({});
+  const [topThree, setTopThree] = useState({});
+  const [otherTop, setOtherTop] = useState({});
 
-  const [artistCover, setArtistCover] = useState(items[0].images[1].url);
+  useEffect(() => {
+    const verifier = localStorage.getItem("verifier");
 
-  function changeOtherArtistsCover(index) {
-    setArtistCover(otherArtists[index].images[1].url);
+    const params = new URLSearchParams();
+    params.append("grant_type", "authorization_code");
+    params.append("client_id", clientId);
+    params.append("code", code);
+    params.append("redirect_uri", PAGE_URL);
+    params.append("code_verifier", verifier);
+
+    const headers = new Headers();
+    headers.append(
+      "Authorization",
+      "Basic MTc1MDMyMTY2Yzc4NDg3ODg0OTUyMTMzY2Y1MGQzZDc6YTNkMzM4YTc0ZGJhNGJmNWFiNjVjMGVhMmRiNGVmYjc="
+    );
+    headers.append("Content-Type", "application/x-www-form-urlencoded");
+
+    if (!localStorage.getItem("token")) {
+      console.log('hola')
+      fetch(`https://accounts.spotify.com/api/token?${params.toString()}`, {
+        method: "POST",
+        headers: headers,
+      })
+        .then((response) => response.json())
+        .then((token) => {
+          localStorage.setItem("token", token.access_token);
+          getArtists(token.access_token);
+        })
+        .catch((error) => console.log("error", error));
+    } else getArtists(localStorage.getItem("token"));
+
+    function getArtists(token) {
+      console.log("hola");
+      fetch("https://api.spotify.com/v1/me/top/artists", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setArtistCover(result.items[0].images[1].url);
+          setTopThree([...result.items].slice(0, 3));
+          setOtherTop([...result.items].slice(3, result.items.length));
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [code]);
+
+  function changeotherTopCover(index) {
+    setArtistCover(otherTop[index].images[1].url);
   }
 
   function changeTopArtistsCover(index) {
-    setArtistCover(topThreeArtists[index].images[1].url);
+    setArtistCover(topThree[index].images[1].url);
   }
 
   return (
@@ -27,7 +69,7 @@ function SpotifyPage({ code }) {
           <img
             className="border-2 border-black p-1 object-cover w-60 h-60"
             src={artistCover}
-            alt={topThreeArtists[1].name}
+            alt={topThree[1]?.name}
           />
         </div>
 
@@ -35,35 +77,36 @@ function SpotifyPage({ code }) {
           className="text-5xl hover:bg-neutral-200 active:bg-black active:text-white"
           onClick={() => changeTopArtistsCover(0)}
         >
-          {topThreeArtists[0].name}
+          {topThree[0]?.name}
         </button>
         <br />
         <button
           className="text-3xl hover:bg-neutral-200 active:bg-black active:text-white"
           onClick={() => changeTopArtistsCover(1)}
         >
-          {topThreeArtists[1].name}
+          {topThree[1]?.name}
         </button>
         <br />
         <button
           className="text-2xl hover:bg-neutral-200 active:bg-black active:text-white"
           onClick={() => changeTopArtistsCover(2)}
         >
-          {topThreeArtists[2].name}
+          {topThree[2]?.name}
         </button>
         <br />
 
         <div className="flex flex-wrap justify-center gap-2 mt-5">
-          {otherArtists.map((artist, index) => (
-            <button
-              key={artist}
-              className="border-2 p-2 hover:border-neutral-800 
+          {Array.isArray(otherTop) &&
+            otherTop?.map((artist, index) => (
+              <button
+                key={index}
+                className="border-2 p-2 hover:border-neutral-800 
               active:text-white active:bg-neutral-800"
-              onClick={() => changeOtherArtistsCover(index)}
-            >
-              {artist.name}
-            </button>
-          ))}
+                onClick={() => changeotherTopCover(index)}
+              >
+                {artist?.name}
+              </button>
+            ))}
         </div>
       </main>
     </>
