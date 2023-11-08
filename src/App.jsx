@@ -16,7 +16,7 @@ window.history.pushState(null, null, nextURL);
 
 function App() {
   return (
-    <main className="container text-center mx-auto">
+    <main>
       {code ? <SpotifyPage code={code} /> : <LoginPage />}
     </main>
   );

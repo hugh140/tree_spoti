@@ -39,8 +39,8 @@ function LoginPage() {
   }
 
   return (
-    <article className="grid place-content-center h-screen">
-      <h1 className="text-4xl pt-5">Spotify blabla</h1>
+    <article className="grid place-content-center h-screen container text-center mx-auto">
+      <h1 className="text-8xl pb-5">50fy</h1>
 
       <div>
         Created by:{" "}
