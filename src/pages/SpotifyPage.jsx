@@ -4,7 +4,7 @@ import { clientId } from "../scripts/constants";
 
 function SpotifyPage({ code }) {
   const [artistCover, setArtistCover] = useState({});
-  const [artistURL, setArtistURL] = useState({})
+  const [artistURL, setArtistURL] = useState({});
   const [topThree, setTopThree] = useState({});
   const [otherTop, setOtherTop] = useState({});
 
@@ -46,7 +46,7 @@ function SpotifyPage({ code }) {
       })
         .then((response) => response.json())
         .then((result) => {
-          setArtistURL(result.items[0].external_urls.spotify)
+          setArtistURL(result.items[0].external_urls.spotify);
           setArtistCover(result.items[0].images[1].url);
           setTopThree([...result.items].slice(0, 3));
           setOtherTop([...result.items].slice(3, result.items.length));
@@ -57,12 +57,12 @@ function SpotifyPage({ code }) {
 
   function changeotherTopCover(index) {
     setArtistCover(otherTop[index].images[1].url);
-    setArtistURL(otherTop[index].external_urls.spotify)
+    setArtistURL(otherTop[index].external_urls.spotify);
   }
 
   function changeTopArtistsCover(index) {
     setArtistCover(topThree[index].images[1].url);
-    setArtistURL(topThree[index].external_urls.spotify)
+    setArtistURL(topThree[index].external_urls.spotify);
   }
 
   function logOut() {
@@ -76,6 +76,14 @@ function SpotifyPage({ code }) {
         className="fixed blur opacity-60 w-full h-full bg-cover bg-center bg-no-repeat -z-10"
         style={{ backgroundImage: `url(${artistCover})` }}
       ></div>
+
+      <div>
+        <img
+        className="absolute top-5 left-5 w-14 saturate-0"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
+          alt=""
+        />
+      </div>
 
       <main className="text-center mx-auto">
         <main className="md:w-1/2 w-9/12  mx-auto">
